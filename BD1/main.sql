@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS stockControl;
 CREATE SCHEMA IF NOT EXISTS stockControl;
 USE stockControl;
 
@@ -13,14 +14,15 @@ CREATE TABLE IF NOT EXISTS cargo (
 -- Tabela funcionario
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS funcionario (
-  cpf 				INT 			NOT NULL,
+  idFuncionario		INT				NOT NULL		AUTO_INCREMENT,
+  cpf 				BIGINT 			NOT NULL,
   nome 				VARCHAR(45) 	NOT NULL,
   endereco 			VARCHAR(45) 	NOT NULL,
   turno 			VARCHAR(45) 	NOT NULL,
   telefone 			VARCHAR(45) 	NOT NULL,
   email 			VARCHAR(45) 	NOT NULL,
   cargo_idcargo 	INT 			NOT NULL,
-  PRIMARY KEY (cpf),
+  PRIMARY KEY (idFuncionario),
   FOREIGN KEY (cargo_idcargo) REFERENCES cargo (idCargo));
 
 
@@ -37,14 +39,15 @@ CREATE TABLE IF NOT EXISTS tipoPessoa (
 -- Tabela cliente
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS cliente (
-  idCliente 				INT 			NOT NULL,
+  idCliente 				INT 			NOT NULL		AUTO_INCREMENT,
+  documento					BIGINT			NOT NULL,
   nome 						VARCHAR(45) 	NOT NULL,
   endereco 					VARCHAR(45) 	NOT NULL,
   telefone 					VARCHAR(45) 	NOT NULL,
   email 					VARCHAR(45) 	NOT NULL,
-  nivel 					VARCHAR(45) 	NOT NULL,
+  nivel 					INT 			NOT NULL,
   tipoPessoa_idTipoPessoa 	INT 			NOT NULL,
-  PRIMARY KEY (idcliente),
+  PRIMARY KEY (idCliente),
   FOREIGN KEY (tipoPessoa_idTipoPessoa) REFERENCES tipoPessoa (idTipoPessoa));
 
 
@@ -52,18 +55,19 @@ CREATE TABLE IF NOT EXISTS cliente (
 -- Tabela fornecedor
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS fornecedor (
-  cnpj 				INT 			NOT NULL,
+  idFornecedor		INT				NOT NULL		AUTO_INCREMENT,
+  cnpj 				BIGINT 			NOT NULL,
   razaoSocial 		VARCHAR(45) 	NOT NULL,
-  PRIMARY KEY (cnpj));
+  PRIMARY KEY (idFornecedor));
 
 
 -- -----------------------------------------------------
 -- Tabela produto
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS produto (
-  codBarras 		INT 			NOT NULL,
+  codBarras 		BIGINT 			NOT NULL,
   nome 				VARCHAR(45) 	NOT NULL,
-  PRIMARY KEY (`codBarras`));
+  PRIMARY KEY (codBarras));
 
 
 -- -----------------------------------------------------
@@ -73,7 +77,7 @@ CREATE TABLE IF NOT EXISTS estoque (
   idEstoque 			INT 		NOT NULL		AUTO_INCREMENT,
   qtdProdutoEntrada 	INT 		NOT NULL,
   qtdProdutoSaida 		INT 		NOT NULL,
-  produto_codBarras 	INT 		NOT NULL,
+  produto_codBarras 	BIGINT 		NOT NULL,
   PRIMARY KEY (idEstoque),
   FOREIGN KEY (produto_codBarras) REFERENCES produto (codBarras));
 
@@ -82,31 +86,31 @@ CREATE TABLE IF NOT EXISTS estoque (
 -- Tabela saida
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS saida (
-  idsaida 				INT 			NOT NULL		AUTO_INCREMENT,
-  qtdProduto 			INT 			NOT NULL,
-  `data` 				DATETIME 		NOT NULL,
-  motivo 				VARCHAR(45) 	NOT NULL,
-  produto_codBarras 	INT 			NOT NULL,
-  cliente_idCliente 	INT 			NULL,
-  funcionario_cpf 		INT 			NOT NULL,
+  idsaida 						INT 			NOT NULL		AUTO_INCREMENT,
+  qtdProduto 					INT 			NOT NULL,
+  `data` 						DATE 			NOT NULL,
+  motivo 						VARCHAR(45) 	NOT NULL,
+  produto_codBarras 			BIGINT 			NOT NULL,
+  cliente_idCliente 			INT 			NULL,
+  funcionario_idFuncionario		INT 			NOT NULL,
   PRIMARY KEY (idsaida),
   FOREIGN KEY (produto_codBarras) REFERENCES produto (codBarras),
   FOREIGN KEY (cliente_idcliente) REFERENCES cliente (idcliente),
-  FOREIGN KEY (funcionario_cpf) REFERENCES funcionario (cpf));
+  FOREIGN KEY (funcionario_idFuncionario) REFERENCES funcionario (idFuncionario));
 
 
 -- -----------------------------------------------------
 -- Tabela entrada
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS entrada (
-  idEntrada 			INT 			NOT NULL		AUTO_INCREMENT,
-  lote 					INT 			NOT NULL,
-  qtdProduto 			INT 			NOT NULL,
-  `data` 				DATETIME 		NOT NULL,
-  validade 				DATETIME 		NOT NULL,
-  fornecedor_cnpj 		INT 			NOT NULL,
-  produto_codBarras 	INT 			NOT NULL,
+  idEntrada 					INT 			NOT NULL		AUTO_INCREMENT,
+  lote 							INT 			NOT NULL,
+  qtdProduto 					INT 			NOT NULL,
+  `data` 						DATE 			NOT NULL,	
+  validade 						DATE			NOT NULL,
+  fornecedor_idFornecedor 		INT 			NOT NULL,
+  produto_codBarras 			BIGINT 			NOT NULL,
   PRIMARY KEY (idEntrada),
-  FOREIGN KEY (fornecedor_cnpj) REFERENCES fornecedor (cnpj),
+  FOREIGN KEY (fornecedor_idFornecedor) REFERENCES fornecedor (idFornecedor),
   FOREIGN KEY (produto_codBarras) REFERENCES produto (codBarras));
   
