@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS fornecedor (
 -- Tabela produto
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS produto (
-  codBarras 		BIGINT 			NOT NULL,
+  codBarras 		BIGINT 			NOT NULL	UNIQUE,
   nome 				VARCHAR(45) 	NOT NULL,
   PRIMARY KEY (codBarras));
 
@@ -86,13 +86,13 @@ CREATE TABLE IF NOT EXISTS estoque (
 -- Tabela saida
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS saida (
-  idsaida 						INT 			NOT NULL		AUTO_INCREMENT,
+  idSaida 						INT 			NOT NULL		AUTO_INCREMENT,
   qtdProduto 					INT 			NOT NULL,
   `data` 						DATE 			NOT NULL,
   motivo 						VARCHAR(45) 	NOT NULL,
   produto_codBarras 			BIGINT 			NOT NULL,
-  cliente_idCliente 			INT 			NULL,
-  funcionario_idFuncionario		INT 			NOT NULL,
+  cliente_idCliente 			INT				NOT NULL,
+  funcionario_idFuncionario		INT				NOT NULL,
   PRIMARY KEY (idsaida),
   FOREIGN KEY (produto_codBarras) REFERENCES produto (codBarras),
   FOREIGN KEY (cliente_idcliente) REFERENCES cliente (idcliente),
