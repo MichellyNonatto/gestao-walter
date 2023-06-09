@@ -92,28 +92,30 @@ BEGIN
 
     -- Se o produto não existir no estoque, cria uma nova instância na tabela "estoque"
     IF existe_produto = 0 THEN
-        INSERT INTO estoque (qtdProdutoEntrada, qtdProdutoSaida, produto_codBarras)
-        VALUES (NEW.qtdProduto, 0, NEW.produto_codBarras);
+        INSERT INTO estoque (qtdProdutoEntrada, qtdProdutoSaida, qtdProdutoTotal, produto_codBarras)
+        VALUES (NEW.qtdProduto, 0, NEW.qtdProduto, NEW.produto_codBarras);
     ELSE
-        -- Atualiza a quantidade de produtos de entrada no estoque
+        -- Atualiza a quantidade de produtos de entrada e total no estoque
         UPDATE estoque
-        SET qtdProdutoEntrada = qtdProdutoEntrada + NEW.qtdProduto
+        SET qtdProdutoEntrada = qtdProdutoEntrada + NEW.qtdProduto,
+            qtdProdutoTotal = qtdProdutoTotal + NEW.qtdProduto
         WHERE produto_codBarras = NEW.produto_codBarras;
     END IF;
 END;
 $$
-
 
 -- Atualiza a quantidade de produtos na tabela "estoque" quando uma nova saída é registrada
 CREATE TRIGGER atualiza_qtd_produto_saida
 AFTER INSERT ON saida
 FOR EACH ROW
 BEGIN
+    -- Atualiza a quantidade de produtos de saída e total no estoque
     UPDATE estoque
-    SET qtdProdutoSaida = qtdProdutoSaida + NEW.qtdProduto
+    SET qtdProdutoSaida = qtdProdutoSaida + NEW.qtdProduto,
+        qtdProdutoTotal = qtdProdutoTotal - NEW.qtdProduto
     WHERE produto_codBarras = NEW.produto_codBarras;
 END;
-        
+
         
 -- -----------------------------------------------------
 -- Inserir valores na tabela entrada
@@ -132,4 +134,3 @@ VALUES	(idSaida, 78, '2023-05-15', "Reposição de estoque", 789654321003, 2, 1)
 		(idSaida, 12, '2023-06-02', "Revenda", 789654321005, 2, 5),
         (idSaida, 25, '2023-06-07', "Vencimento do produto", 789654321002, 1, 4);
         
-

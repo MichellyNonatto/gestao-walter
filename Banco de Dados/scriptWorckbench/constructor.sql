@@ -77,6 +77,7 @@ CREATE TABLE IF NOT EXISTS estoque (
   idEstoque 			INT 		NOT NULL		AUTO_INCREMENT,
   qtdProdutoEntrada 	INT 		NOT NULL,
   qtdProdutoSaida 		INT 		NOT NULL,
+  qtdProdutoTotal		INT			NOT NULL,
   produto_codBarras 	BIGINT 		NOT NULL,
   PRIMARY KEY (idEstoque),
   FOREIGN KEY (produto_codBarras) REFERENCES produto (codBarras));
@@ -113,4 +114,5 @@ CREATE TABLE IF NOT EXISTS entrada (
   PRIMARY KEY (idEntrada),
   FOREIGN KEY (fornecedor_idFornecedor) REFERENCES fornecedor (idFornecedor),
   FOREIGN KEY (produto_codBarras) REFERENCES produto (codBarras));
+  
   
