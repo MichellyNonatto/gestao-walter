@@ -55,11 +55,11 @@ VALUES  (idCliente, 12345678910, 'João Silva', 'Rua das Flores, 123', '(11) 123
 -- Inserir valores na tabela fornecedor
 -- -----------------------------------------------------  
 INSERT INTO fornecedor
-VALUES	(idFornecedor, 12345678000101, "Tech Solutions Ltda."),
-		(idFornecedor, 23456789000102, "Comércio de Moda Fashionista S.A."),
-		(idFornecedor, 34567890000103, "Engenharia e Construções Excelência Ltda."),
-		(idFornecedor, 45678901000104, "Café Delícia do Vale Ltda."),
-		(idFornecedor, 56789012000105, "Serviços de Marketing Digital Criativo S.A.");
+VALUES	(idFornecedor, 12345678000101, "Refresko Co."),
+		(idFornecedor, 23456789000102, "Bebidas Delícia"),
+		(idFornecedor, 34567890000103, "Sabores Líquidos"),
+		(idFornecedor, 45678901000104, "Liquid Euphoria"),
+		(idFornecedor, 56789012000105, "Viva Drinks Corp.");
 
 
 -- -----------------------------------------------------
@@ -71,30 +71,65 @@ VALUES	(789654321001, "Refrigerante Cola Classic"),
         (789654321003, "Água Mineral Sem Gás"),
         (789654321004, "Cerveja Puro Malte IPA"),
         (789654321005, "Energético PowerBoost");
-
-
--- -----------------------------------------------------
--- Inserir valores na tabela saída
--- -----------------------------------------------------  
-INSERT INTO saida
-VALUES	(idSaida, 78, '2023-05-15', "Reposição de estoque", 789654321003, 2, 1),
-		(idSaida, 12, '2023-06-02', "Revenda", 789654321005, 2, 5),
-        (idSaida, 65, '2023-06-07', "Vencimento do produto", 789654321002, 1, 4);
         
+        
+-- -----------------------------------------------------
+-- Inserir valores na tabela estoque
+-- Para isso utilizamos o conceito de trigger, que são objetos do banco de dados que, 
+-- relacionados a certa tabela, permitem a realização de processamentos em consequência 
+-- de uma determinada ação como, por exemplo, a inserção de um registro.
+-- -----------------------------------------------------
 
+-- Atualiza a quantidade de produtos na tabela "estoque" quando uma nova entrada é registrada
+DELIMITER $$
+CREATE TRIGGER atualiza_qtd_produto_entrada
+AFTER INSERT ON entrada
+FOR EACH ROW
+BEGIN
+    -- Verifica se o produto já existe no estoque
+    DECLARE existe_produto INT DEFAULT 0;
+    SET existe_produto = (SELECT COUNT(*) FROM estoque WHERE produto_codBarras = NEW.produto_codBarras);
+
+    -- Se o produto não existir no estoque, cria uma nova instância na tabela "estoque"
+    IF existe_produto = 0 THEN
+        INSERT INTO estoque (qtdProdutoEntrada, qtdProdutoSaida, produto_codBarras)
+        VALUES (NEW.qtdProduto, 0, NEW.produto_codBarras);
+    ELSE
+        -- Atualiza a quantidade de produtos de entrada no estoque
+        UPDATE estoque
+        SET qtdProdutoEntrada = qtdProdutoEntrada + NEW.qtdProduto
+        WHERE produto_codBarras = NEW.produto_codBarras;
+    END IF;
+END;
+$$
+
+
+-- Atualiza a quantidade de produtos na tabela "estoque" quando uma nova saída é registrada
+CREATE TRIGGER atualiza_qtd_produto_saida
+AFTER INSERT ON saida
+FOR EACH ROW
+BEGIN
+    UPDATE estoque
+    SET qtdProdutoSaida = qtdProdutoSaida + NEW.qtdProduto
+    WHERE produto_codBarras = NEW.produto_codBarras;
+END;
+        
+        
 -- -----------------------------------------------------
 -- Inserir valores na tabela entrada
 -- -----------------------------------------------------
 INSERT INTO entrada
 VALUES	(idEntrada, 572, 87, '2023-05-25', '2023-11-04', 2, 789654321003),
 		(idEntrada, 854, 152, '2023-05-04', '2024-01-02', 4, 789654321005),
-        (idEntrada, 321, 43, '2023-05-25', '2024-02-28', 3, 789654321002);
+        (idEntrada, 321, 43, '2022-05-25', '2023-02-28', 3, 789654321002);
+        
+        
+-- -----------------------------------------------------
+-- Inserir valores na tabela saída
+-- -----------------------------------------------------  
+INSERT INTO saida
+VALUES	(idSaida, 78, '2023-05-15', "Reposição de estoque", 789654321003, 2, 1),
+		(idSaida, 12, '2023-06-02', "Revenda", 789654321005, 2, 5),
+        (idSaida, 25, '2023-06-07', "Vencimento do produto", 789654321002, 1, 4);
         
 
--- -----------------------------------------------------
--- Inserir valores na tabela estoque
--- -----------------------------------------------------
-INSERT INTO estoque
-VALUES	(idEstoque, 144, 32, 789654321003),
-		(idEstoque, 82, 14, 789654321005),
-        (idEstoque, 112, 40, 789654321002);
