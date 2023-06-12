@@ -44,7 +44,7 @@ from cliente;
 -- -------------------------------------------------------------------------------------
 -- 4. Exibir cpf e nome do funcionário e seu respectivo cargo
 -- -------------------------------------------------------------------------------------
-select f.cpf, f.nome, c.descricao 
+select f.cpf, f.nome, c.descricao
 from funcionario f inner join cargo c on f.cargo_idCargo=c.idCargo;
 
 
@@ -63,12 +63,12 @@ where c.descricao = 'Gerente';
 
 
 -- -------------------------------------------------------------------------------------
--- 7. Listar os funcionários que têm mais de 5 anos de empresa
--- 365 dias * 5 anos = 1825 dias
+-- 7. Listar os funcionários que têm mais de 30 anos
+-- 365 dias * 30 anos = 10950 dias
 -- -------------------------------------------------------------------------------------
 select nome, dataNascimento
 from funcionario
-where datediff(curdate(), dataNascimento) > 1825;
+where datediff(curdate(), dataNascimento) > 10950;
 
 
 -- -------------------------------------------------------------------------------------
