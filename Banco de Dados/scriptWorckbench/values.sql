@@ -1,18 +1,4 @@
 -- -----------------------------------------------------
--- Selecionar todas as tabelas
--- -----------------------------------------------------
-SELECT * FROM cargo;
-SELECT * FROM funcionario;
-SELECT * FROM tipoPessoa;
-SELECT * FROM cliente;
-SELECT * FROM fornecedor;
-SELECT * FROM produto;
-SELECT * FROM estoque;
-SELECT * FROM saida;
-SELECT * FROM entrada;
-
-
--- -----------------------------------------------------
 -- Inserir valores na tabela cargo
 -- -----------------------------------------------------
 INSERT INTO cargo
@@ -132,7 +118,8 @@ VALUES	(idEntrada, 572, 87, '2023-05-25', '2023-11-04', 2, 789654321003),
 -- Inserir valores na tabela saída
 -- -----------------------------------------------------  
 INSERT INTO saida
-VALUES	(idSaida, 78, '2023-05-15', "Reposição de estoque", 789654321003, 2, 1),
-		(idSaida, 12, '2023-06-02', "Revenda", 789654321005, 2, 5),
-        (idSaida, 25, '2023-06-07', "Vencimento do produto", 789654321002, 1, 4);
+VALUES	(idSaida, 78, '2023-05-15', "Venda", 789654321003, 1, 2),
+		(idSaida, 12, '2023-06-02', "Venda", 789654321005, 5, 2),
+        (idSaida, 25, '2023-06-04', "Vencimento do produto", 789654321002, 4, null),
+        (idSaida, 3, '2023-06-07', "Vencimento do produto", 789654321005, 4, null);
         

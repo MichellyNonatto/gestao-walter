@@ -93,12 +93,12 @@ CREATE TABLE IF NOT EXISTS saida (
   `data` 						DATE 			NOT NULL,
   motivo 						VARCHAR(45) 	NOT NULL,
   produto_codBarras 			BIGINT 			NOT NULL,
-  cliente_idCliente 			INT				NOT NULL,
   funcionario_idFuncionario		INT				NOT NULL,
+  cliente_idCliente 			INT,
   PRIMARY KEY (idsaida),
   FOREIGN KEY (produto_codBarras) REFERENCES produto (codBarras),
-  FOREIGN KEY (cliente_idcliente) REFERENCES cliente (idcliente),
-  FOREIGN KEY (funcionario_idFuncionario) REFERENCES funcionario (idFuncionario));
+  FOREIGN KEY (funcionario_idFuncionario) REFERENCES funcionario (idFuncionario),
+  FOREIGN KEY (cliente_idcliente) REFERENCES cliente (idcliente));
 
 
 -- -----------------------------------------------------
