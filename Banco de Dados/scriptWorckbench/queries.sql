@@ -123,3 +123,14 @@ where idFuncionario = 1;
 update funcionario
 set cargo_idCargo = 1
 where idFuncionario = 2;
+
+
+-- -------------------------------------------------------------------------------------
+-- 15. Listar a quantidade de produtos vendidos em que o cliente não é null por funcionário em ordem decrescente
+-- -------------------------------------------------------------------------------------
+select f.nome as funcionario, sum(s.qtdProduto) as totalProdutosVendidos
+from funcionario f inner join saida s on f.idFuncionario = s.funcionario_idFuncionario
+where s.cliente_idCliente is not null
+group by f.nome
+order by totalProdutosVendidos desc;
+
