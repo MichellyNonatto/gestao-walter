@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS funcionario (
   turno 			VARCHAR(45) 	NOT NULL,
   telefone 			VARCHAR(45) 	NOT NULL,
   email 			VARCHAR(45) 	NOT NULL,
+  dataNascimento	DATE			NOT NULL,	
   cargo_idcargo 	INT 			NOT NULL,
   PRIMARY KEY (idFuncionario),
   FOREIGN KEY (cargo_idcargo) REFERENCES cargo (idCargo));
