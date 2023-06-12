@@ -7,7 +7,7 @@ USE stockControl;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS cargo (
   idCargo			INT				NOT NULL		AUTO_INCREMENT,
-  descricao			VARCHAR(45)		NULL,
+  descricao			VARCHAR(45)		NOT NULL,
   PRIMARY KEY (idcargo));
 
 -- -----------------------------------------------------

@@ -117,6 +117,7 @@ update funcionario
 set endereco = 'Rua dos Benjamins, 12'
 where idFuncionario = 1;
 
+
 -- -------------------------------------------------------------------------------------
 -- 14. Alterar o cargo de um funcionário especifico
 -- -------------------------------------------------------------------------------------
